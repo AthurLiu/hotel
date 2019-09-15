@@ -11,6 +11,7 @@ public class User {
 	private String userCard;
 	private String userAddress;
 	private String userPhone;
+	private Double houseDep;
 	private int createId;
 	private int updateId;
 	private String createTime;
@@ -74,5 +75,11 @@ public class User {
 	}
 	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
+	}
+	public Double getHouseDep() {
+		return houseDep;
+	}
+	public void setHouseDep(Double houseDep) {
+		this.houseDep = houseDep;
 	}
 }

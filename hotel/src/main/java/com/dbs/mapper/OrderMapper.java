@@ -3,6 +3,7 @@ package com.dbs.mapper;
 import java.util.List;
 import com.dbs.entity.House;
 import com.dbs.entity.Order;
+import com.dbs.entity.Reserve;
 import com.dbs.entity.User;
 
 public interface OrderMapper {
@@ -11,6 +12,12 @@ public interface OrderMapper {
 	 * @return
 	 */
 	public List<House> selectAllEmptyHouse();
+	
+	/**
+	 * 查询所有空房间带类型（前台）
+	 * @return
+	 */
+	public List<House> selectAllEmptyHouseT(String type);
 	
 	/**
 	 * 查询所有房间（前台）
@@ -31,10 +38,16 @@ public interface OrderMapper {
 	public List<Order> ordShow();
 	
 	/**
-	 * 显示指定用户的订房信息（前台）
+	 * 	显示指定用户姓名的订房信息（前台）
 	 * @return
 	 */
 	public List<Order> selectOrderByName(String userName);
+	
+	/**
+	 * 	显示指定用户ID的订房信息（前台）
+	 * @return
+	 */
+	public List<House> selectOrderById(int userId);
 	
 	/**
 	 * 修改客房信息，即空房-->已预订（前台）
@@ -91,4 +104,16 @@ public interface OrderMapper {
 	 * @return
 	 */
 	public int selectUserIdByUserName(String userName);
+	
+	/**
+	 * 	显示所有的房间入住信息
+	 * @return
+	 */
+	public List<Reserve> empGoShowResrve();
+	
+	/**
+	 * 	显示所有用户信息（入住）
+	 * @return
+	 */
+	public List<User> empGoShowUser();
 }

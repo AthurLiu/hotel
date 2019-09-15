@@ -1,14 +1,14 @@
-ĞÂ½¨Êı¾İ¿âhotel
-hotelÏÂÃæ½¨±í
+ï¿½Â½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½hotel
+hotelï¿½ï¿½ï¿½æ½¨ï¿½ï¿½
 
 
---¾ÆµêÔ±¹¤±í
+--å‘˜å·¥è¡¨
 CREATE TABLE `emp` (
 	`emp_id` INT(11) NOT NULL AUTO_INCREMENT,
 	`emp_name` VARCHAR(50) NULL DEFAULT NULL,
 	`emp_pass` VARCHAR(32) NULL DEFAULT NULL,
-	`emp_type` CHAR(1) NULL DEFAULT NULL COMMENT 'A:¹ÜÀíÔ±/B£º·¿¹ÜÔ±/C£ºÊÕÒøÔ±/D£ºÇ°Ì¨½Ó´ıÈËÔ±',
-	`emp_state` CHAR(1) NULL DEFAULT 'N' COMMENT 'Y:¼¤»î/N:Î´¼¤»î',
+	`emp_type` CHAR(1) NULL DEFAULT NULL COMMENT 'A:ç®¡ç†å‘˜/Bï¼šæˆ¿ç®¡å‘˜/Cï¼šæ”¶é“¶å‘˜/Dï¼šå‰å°æ¥å¾…äººå‘˜',
+	`emp_state` CHAR(1) NULL DEFAULT 'N' COMMENT 'Y:æ¿€æ´»/N:æœªæ¿€æ´»',
 	`create_id` INT(11) NULL DEFAULT NULL,
 	`create_time` VARCHAR(50) NULL DEFAULT NULL,
 	`update_id` INT(11) NULL DEFAULT NULL,
@@ -17,26 +17,26 @@ CREATE TABLE `emp` (
 )
 insert into emp values(1,"admin","666666",'A','Y',1,now(),1,now())
 insert into emp values(2,"lisi","lisi",'B','Y',2,now(),2,now())
---¾Æµê·¿¼ä±í
+--æˆ¿é—´è¡¨
 CREATE TABLE `house` (
 	`house_id` INT(11) NOT NULL,
 	`house_loc` VARCHAR(50) NULL DEFAULT NULL,
-	`house_type` CHAR(1) NULL DEFAULT NULL COMMENT 'Aµ¥ÈË¼ä:BË«ÈË±ê×¼¼ä:CºÀ»ªË«ÈË¼ä:DºÀ»ªÈıÈË¼ä:E×ÜÍ³Ì×·¿',
-	`house_art` CHAR(1) NULL DEFAULT NULL COMMENT 'Y:ÍêºÃ/N:Ëğ»Ù',
-	`house_state` CHAR(1) NULL DEFAULT NULL COMMENT 'A:¿Õ·¿/B:ÒÑÔ¤¶©/C:ÒÑÈë×¡',
-	`house_netst` CHAR(1) NULL DEFAULT 'N' COMMENT 'Y:¿ªÍø/N:Î´¿ªÍø',
+	`house_type` CHAR(1) NULL DEFAULT NULL COMMENT 'Aå•äººé—´:BåŒäººæ ‡å‡†é—´:Cè±ªååŒäººé—´:Dè±ªåä¸‰äººé—´:Eæ€»ç»Ÿå¥—æˆ¿',
+	`house_art` CHAR(1) NULL DEFAULT NULL COMMENT 'Y:å®Œå¥½/N:æŸæ¯',
+	`house_state` CHAR(1) NULL DEFAULT NULL COMMENT 'A:ç©ºæˆ¿/B:å·²é¢„è®¢/C:å·²å…¥ä½',
+	`house_netst` CHAR(1) NULL DEFAULT 'N' COMMENT 'Y:å¼€ç½‘/N:æœªå¼€ç½‘',
 	`create_id` INT(11) NULL DEFAULT NULL,
 	`create_time` VARCHAR(50) NULL DEFAULT NULL,
 	`update_id` INT(11) NULL DEFAULT NULL,
 	`update_time` VARCHAR(50) NULL DEFAULT NULL,
 	PRIMARY KEY (`house_id`)
 )
---·¿¼ä¼Û¸ñ±í
+--æˆ¿é—´ä»·æ ¼è¡¨
 CREATE TABLE `house_price` (
 	`house_type` CHAR(1) NOT NULL,
-	`house_pric` DOUBLE NULL DEFAULT NULL COMMENT '·¿·Ñ',
-	`house_net` DOUBLE NULL DEFAULT '15' COMMENT 'Íø·Ñ15/d',
-	`house_dep` DOUBLE NULL DEFAULT NULL COMMENT 'Ñº½ğ',
+	`house_pric` DOUBLE NULL DEFAULT NULL COMMENT 'æˆ¿è´¹',
+	`house_net` DOUBLE NULL DEFAULT '15' COMMENT 'ç½‘è´¹15/d',
+	`house_dep` DOUBLE NULL DEFAULT NULL COMMENT 'æŠ¼é‡‘',
 	`create_id` INT(11) NULL DEFAULT NULL,
 	`create_time` VARCHAR(50) NULL DEFAULT NULL,
 	`update_id` INT(11) NULL DEFAULT NULL,
@@ -48,7 +48,7 @@ insert into house_price values('B',268,15,200,2,now(),2,now())
 insert into house_price values('C',288,15,300,2,now(),2,now())
 insert into house_price values('D',368,15,400,2,now(),2,now())
 insert into house_price values('E',568,15,500,2,now(),2,now())
---Ô¤¶¨·¿¼ä±í
+--é¢„å®šè¡¨
 CREATE TABLE `ord` (
 	`ord_id` INT(11) NOT NULL AUTO_INCREMENT,
 	`ord_date` VARCHAR(50) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE `ord` (
 	`update_time` VARCHAR(50) NOT NULL,
 	PRIMARY KEY (`ord_id`)
 )
---ÓÃ»§ĞÅÏ¢±í
+--å®¢æˆ·è¡¨
 CREATE TABLE `user` (
 	`user_id` INT(11) NOT NULL AUTO_INCREMENT,
 	`user_name` VARCHAR(50) NOT NULL,
@@ -74,15 +74,15 @@ CREATE TABLE `user` (
 	`update_time` VARCHAR(50) NOT NULL,
 	PRIMARY KEY (`user_id`)
 )
---Èë×¡±í
+--å…¥ä½è¡¨
 CREATE TABLE `reserve` (
 	`reserve_id` INT(11) NOT NULL AUTO_INCREMENT,
 	`user_id` INT(11) NOT NULL,
 	`house_id` INT(11) NOT NULL,
 	`house_in` VARCHAR(50) NOT NULL,
 	`house_out` VARCHAR(50) NULL DEFAULT NULL,
-	`house_net` CHAR(1) NOT NULL COMMENT 'Y:¿ªÍø£¬N:Î´¿ªÍø',
-	`house_dep` DOUBLE NOT NULL COMMENT 'Ñº½ğ',
+	`house_net` CHAR(1) NOT NULL COMMENT 'Y:å¼€ç½‘ï¼ŒN:æœªå¼€ç½‘',
+	`house_dep` DOUBLE NOT NULL COMMENT 'æŠ¼é‡‘',
 	`create_id` INT(11) NOT NULL,
 	`create_time` VARCHAR(50) NOT NULL,
 	`update_id` INT(11) NOT NULL,

@@ -223,12 +223,16 @@ public class EmpInfoAction {
 	@RequestMapping(value="empUpdateOwn",method=RequestMethod.POST)
 	@ResponseBody
 	public String UpdateOwn(Emp emp) {
+		System.out.println("开始修改个人信息");
 		if(empService.selectByName(emp) != null) {
-			return "false";
+			System.out.println("修改个人信息失败，用户名已存在");
+			return "false1";
 		} else {
 			if(empService.updateOwn(emp)) {
+				System.out.println("修改个人信息成功");
 				return "success";
 			} else {
+				System.out.println("修改个人信息失败");
 				return "false";
 			}
 		}

@@ -7,8 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.dbs.entity.House;
 import com.dbs.entity.Order;
+import com.dbs.entity.Reserve;
 import com.dbs.entity.User;
 import com.dbs.service.OrderService;
 
@@ -21,15 +25,15 @@ public class OrderInfoAction {
 	private OrderService orderService;
 
 	/**
-	 * 预定和入住
+	 * 	预定和入住
 	 * @param request
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value="empGoAddOrder",method=RequestMethod.GET)
-	public String empGoAddOrder(Model model) {
-		model.addAttribute("houseList", orderService.selectAllEmptyHouse());
-		return "orderAdd";
+	@ResponseBody
+	public List<House> empGoAddOrder() {
+		return orderService.selectAllEmptyHouse();
 	}
 	
 	/**
@@ -39,9 +43,9 @@ public class OrderInfoAction {
 	 * @return
 	 */
 	@RequestMapping(value="empGoshowHouseState",method=RequestMethod.GET)
-	public String empGoshowHouseState(Model model) {
-		model.addAttribute("houseList", orderService.selectAllHouse());
-		return "houseShow";
+	@ResponseBody
+	public List<House> empGoshowHouseState(Model model) {
+		return orderService.selectAllHouse();
 	}
 
 	
@@ -53,68 +57,79 @@ public class OrderInfoAction {
 	 * @return
 	 */
 	@RequestMapping(value="addOrder",method=RequestMethod.POST)
-	public String addOrder(HttpServletRequest request , House house , Model model) {
+	@ResponseBody
+	public String addOrder(House house) {
 		if(EmpInfoAction.employeeID == 0) {
-			model.addAttribute("msg", "提示：房间预定修改失败，前台已下线！");
+			return "fail1";
 		} else {
 			Order order = new Order();
-			order.setHouseId(Integer.parseInt(request.getParameter("houseId")));
-			order.setUserName(request.getParameter("userName"));
+			order.setHouseId(house.getHouseId());
+			order.setUserName(house.getHouseLoc());
 			order.setCreateId(EmpInfoAction.employeeID);
 			house.setUpdateId(EmpInfoAction.employeeID);
 			if(orderService.updateHouseStateByOrder(house) && orderService.orderAdd(order)) {
-				model.addAttribute("msg", "提示：房间预定成功！");
+				return "success";
 			} else {
-				model.addAttribute("msg", "提示：房间预定失败！");
+				return "fail";
 			}
-			model.addAttribute("houseList", orderService.selectAllEmptyHouse());
 		}	
-		return "orderAdd";
 	}
 	
 	/**
-	 * 转到修改订单信息
+	 * 	转到修改订单信息
 	 * @param request
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value="empGoChangeOrder",method=RequestMethod.GET)
-	public String showOrder(Model model) {
-		model.addAttribute("houseList", orderService.orderShow());
-		return "orderManager";
+	@ResponseBody
+	public List<House> showOrder(Model model) {
+		return orderService.orderShow();
 	}
 	
 	/**
-	 * 转到显示订房信息
+	 * 	转到显示订房信息
 	 * @param request
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value="empGoShowOrder",method=RequestMethod.GET)
-	public String showReserve(Model model) {
-		model.addAttribute("orderList", orderService.ordShow());
-		return "orderShow";
+	@ResponseBody
+	public List<Order> showReserve(Model model) {
+		return orderService.ordShow();
 	}
 	
 	/**
-	 * 取消订房
+	 * 显示指定房间类型的空房
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="houseType",method=RequestMethod.POST)
+	@ResponseBody
+	public List<House> houseType(@RequestParam String type) {
+		System.out.println(type);
+		return orderService.selectAllEmptyHouseT(type);
+	}
+	
+	/**
+	 * 	取消订房
 	 * @param house
 	 * @param model
 	 */
 	@RequestMapping(value="changeOrderA",method=RequestMethod.POST)
-	public String changeOrderA(House house,Model model) {
+	@ResponseBody
+	public String changeOrderA(House house) {
 		if(EmpInfoAction.employeeID == 0) {
-			model.addAttribute("msg", "提示：房间取消失败，前台已下线！");
+			return "fail1";
 		} else {
 			house.setUpdateId(EmpInfoAction.employeeID);
 			if(orderService.changeOrderA(house) && orderService.deleteOrder(house)) {
-				model.addAttribute("msg", "提示：房间取消成功！");
+				return "success";
 			} else {
-				model.addAttribute("msg", "提示：房间取消失败！");
+				return "fail";
 			}
 		}
-		model.addAttribute("houseList", orderService.orderShow());
-		return "orderManager";
 	}
 	
 	/**
@@ -123,11 +138,31 @@ public class OrderInfoAction {
 	 * @param model
 	 */
 	@RequestMapping(value="changeReciver",method=RequestMethod.POST)
-	public String changeReciver(HttpServletRequest request,Model model) {
-		model.addAttribute("userName", request.getParameter("userName"));
-		model.addAttribute("houseId", request.getParameter("houseId"));
-		model.addAttribute("houseDep", request.getParameter("houseDep"));
-		return "reserveAdd";
+	@ResponseBody
+	public List<House> changeReciver(House house) {
+		return orderService.selectOrderById(house.getHouseId());
+	}
+	
+	/**
+	 * 	显示所有的入住信息
+	 * @param house
+	 * @param model
+	 */
+	@RequestMapping(value="empGoShowResrve",method=RequestMethod.GET)
+	@ResponseBody
+	public List<Reserve> empGoShowResrve() {
+		return orderService.empGoShowResrve();
+	}
+	
+	/**
+	 * 	显示所有的入住信息
+	 * @param house
+	 * @param model
+	 */
+	@RequestMapping(value="empGoShowUser",method=RequestMethod.GET)
+	@ResponseBody
+	public List<User> empGoShowUser() {
+		return orderService.empGoShowUser();
 	}
 	
 	/**
@@ -154,24 +189,23 @@ public class OrderInfoAction {
 	 * @param model
 	 */
 	@RequestMapping(value="reserveAdd",method=RequestMethod.POST)
-	public String reserveAdd(User user1 , HttpServletRequest request, Model model) {
+	@ResponseBody
+	public String reserveAdd(User user1) {
 		House house = new House();
 		if(EmpInfoAction.employeeID == 0) {
-			model.addAttribute("msg", "提示：入住办理失败，前台已下线！");
+			return "fail1";
 		} else {
-			model.addAttribute("msg", "提示：入住办理失败！");
 			house.setHouseId(user1.getUpdateId());
 			house.setHouseNet(user1.getCreateTime());
 			house.setUpdateId(EmpInfoAction.employeeID);
-			house.setHouseDep(Double.parseDouble(request.getParameter("houseDep")));
+			house.setHouseDep(user1.getHouseDep());
 			user1.setCreateId(EmpInfoAction.employeeID);
 			orderService.userAdd(user1);
 			house.setCreateId(orderService.selectUserIdByUserName(user1.getUserName()));
 			orderService.reserveAdd(house);
 			orderService.changeOrderC(house);
 			orderService.deleteOrder(house);
-			model.addAttribute("msg", "提示：入住办理成功！");
+			return "success";
 		}
-		return "reserveAdd";
 	}
 }

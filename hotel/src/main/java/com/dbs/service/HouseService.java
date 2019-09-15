@@ -19,6 +19,13 @@ public interface HouseService {
 	public boolean houseUpdate(House house);
 	
 	/**
+	 * 修改房屋网费（房管）
+	 * @param emp
+	 * @return
+	 */
+	public boolean houseUpdateNet(House house);
+	
+	/**
 	 * 添加房屋（房管）
 	 * @param emp
 	 * @return
@@ -30,4 +37,22 @@ public interface HouseService {
 	 * @return
 	 */
 	public List<House> selectAllHouse();
+	
+	/**
+	 * 查询所有空房信息（房管）
+	 * @return
+	 */
+	public List<House> selectAllHouseA();
+	
+	/**
+	 * 查询所有预定房信息（房管）
+	 * @return
+	 */
+	public List<House> selectAllHouseB();
+	
+	/**
+	 * 查询所有入住房信息（房管）
+	 * @return
+	 */
+	public List<House> selectAllHouseC();
 }

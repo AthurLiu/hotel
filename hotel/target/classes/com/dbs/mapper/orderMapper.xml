@@ -19,6 +19,10 @@
     <select id="selectAllEmptyHouse" resultMap="houses">
     	select h.*,p.house_pric,p.house_dep from house h,house_price p where h.house_type = p.house_type and h.house_state = 'A'
     </select> 
+    <select id="selectAllEmptyHouseT" parameterType="String" resultMap="houses">
+    	select h.*,p.house_pric,p.house_dep from house h,house_price p where h.house_type = p.house_type and h.house_state = 'A' 
+    	and h.house_type = #{type}
+    </select>
     <select id="selectAllHouse" resultMap="houses">
     	select h.*,p.house_pric,p.house_dep from house h,house_price p where h.house_type = p.house_type
     </select>
@@ -39,6 +43,13 @@
     <select id="selectOrderByName" parameterType="String" resultMap="orders">
     	select * from ord where user_name = #{userName}
     </select> 
+    <select id="selectOrderById" parameterType="int" resultMap="house1">
+    	select h.*,p.house_pric,r.user_name,p.house_dep 
+		from ord r,house h,house_price p 
+		where h.house_state = 'B' 
+		and h.house_id = r.house_id and p.house_type = h.house_type 
+    	and h.house_id = #{userId}
+    </select> 
     <select id="selectUserIdByUserName" parameterType="String" resultType="int">
     	select user_id from user where user_name = #{userName}
     </select>
@@ -50,7 +61,13 @@
     	insert into reserve(user_id,house_id,house_in,house_net,house_dep,create_id,create_time,update_id,update_time) 
     	values(#{createId},#{houseId},now(),#{houseNet},#{houseDep},#{updateId},now(),#{updateId},now())
     </insert>
-    
+    <select id="empGoShowResrve" resultMap="reserves">
+    	select r.reserve_id,r.house_in,r.house_id,u.user_name,u.user_phon from user u,reserve r 
+    	where u.user_id = r.user_id
+    </select> 
+    <select id = "empGoShowUser" resultMap="users">
+    	select * from user
+    </select>
     <resultMap type="House" id="house1">
     	<id property="houseId" column="house_id" javaType="int" jdbcType="INTEGER"></id>
     	<result property="houseLoc" column="house_loc" javaType="String" jdbcType="VARCHAR"></result>
@@ -75,11 +92,26 @@
     	<result property="createTime" column="create_time" javaType="String" jdbcType="VARCHAR"></result>
     	<result property="updateTime" column="update_time" javaType="String" jdbcType="VARCHAR"></result>
     </resultMap>
-      <resultMap type="Order" id="orders">
+     <resultMap type="Order" id="orders">
     	<id property="orderId" column="ord_id" javaType="int" jdbcType="INTEGER"></id>
     	<result property="orderDate" column="ord_date" javaType="String" jdbcType="VARCHAR"></result>
     	<result property="userName" column="user_name" javaType="String" jdbcType="VARCHAR"></result>
     	<result property="houseId" column="house_id" javaType="int" jdbcType="INTEGER"></result>
+    </resultMap>
+    <resultMap type="Reserve" id="reserves">
+    	<id property="resId" column="reserve_id" javaType="int" jdbcType="INTEGER"></id>
+    	<result property="houseIn" column="house_in" javaType="String" jdbcType="VARCHAR"></result>
+    	<result property="houseId" column="house_id" javaType="int" jdbcType="INTEGER"></result>
+    	<result property="userName" column="user_name" javaType="String" jdbcType="VARCHAR"></result>
+    	<result property="userPhone" column="user_phon" javaType="String" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <resultMap type="User" id="users">
+    	<id property="userId" column="user_id" javaType="int" jdbcType="INTEGER"></id>
+    	<result property="userName" column="user_name" javaType="String" jdbcType="VARCHAR"></result>
+    	<result property="userSex" column="user_sex" javaType="String" jdbcType="VARCHAR"></result>
+    	<result property="userCard" column="user_card" javaType="String" jdbcType="VARCHAR"></result>
+    	<result property="userAddress" column="user_addr" javaType="String" jdbcType="VARCHAR"></result>
+    	<result property="userPhone" column="user_phon" javaType="String" jdbcType="VARCHAR"></result>
     </resultMap>
 </mapper>
 

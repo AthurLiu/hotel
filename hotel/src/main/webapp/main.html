@@ -2,213 +2,9 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>主界面</title>
-		 <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
-		<style>
-			input[type="button"]{
-				background-color:transparent;
-				border:none;
-				color:blue;
-			}
-			form input:hover {
-				color:red;
-			}
-			#B,#C,#D,#A1,#C1,#D1,#A2,#B2,#C2,.left input[type="text"],#emp,#empUpdateOwn{
-				display: none;
-			}
-			span{
-				color:blue;
-			}
-			header{
-				height:130px;
-				background-color: orange;
-				text-align: center;
-			}
-			header >span{
-				font-size: 50px;
-				font-family: '隶书';
-				color:black;
-			}
-			header >p{
-				text-align: left;
-			}
-			.left{
-				background-color: cyan;
-				width:150px;
-				height:820px;
-			}
-			.right{
-				margin-top:-820px;
-				margin-left:150px;
-			}
-			#emp{
-			
-			}
-		</style>
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$.ajax({
-			 		url:"/hotel/main1",
-			 		type:"post",
-			 		success:function(data){
-			 			if(data == ""){
-			 				window.location.href="login.html";
-			 			} else {
-			 				var json=eval(data);
-			 				$("#user").html(json[0].empName);
-			 				$('.empGoUpdate').attr('id',json[0].empType);
-			 				$('.empGoAddHouse').attr('id',json[0].empType + '1');
-			 				$('.empGoshowHouse').attr('id',json[0].empType + '1');
-			 				$('.empGoAddOrder').attr('id',json[0].empType + '2');
-			 				$('.empGoChangeOrder').attr('id',json[0].empType + '2');
-			 				$('.empGoShowOrder').attr('id',json[0].empType + '2');
-			 				$('.empGoshowHouseState').attr('id',json[0].empType + '2');
-			 				$("#empName").val(json[0].empName);
-			 			}
-			 		},error:function(error){
-			 			window.location.href="login.html";
-			 		}
-			 	})
-			});
-			empdowmLine = function(){	
-			 	$.ajax({
-			 		url:"/hotel/empdowmLine",
-			 		type:"get",
-			 		success:function(data){
-			 			if(data == "success"){
-			 				window.location.href="login.html";
-			 			}
-			 		},error:function(error){
-			 			window.location.href="main.html";
-			 		}
-			 	})
-			}
-			empGoUpdate = function(){	
-				display();
-				$("#emp").css("display","block");
-			 	$.ajax({
-			 		url:"/hotel/empGoUpdate",
-			 		type:"get",
-			 		success:function(data){
-			 			var json = eval(data);
-			 			var str = "<table border='1'>";
-			 			for(var i = 0; i < json.length; i++){
-			 				if(i == 0){
-			 					str = str + "<tr><td>员工编号</td><td>员工姓名</td><td>员工职位</td><td>员工状态</td></tr>";
-			 				}
-			 				str = str + "<tr>";
-			 				str = str + "<td>" + json[i].empId + "</td>";
-			 				str = str + "<td>" + json[i].empName + "</td>";
-			 				str = str + "<td>" + json[i].empType + "</td>";
-			 				str = str + "<td>" + json[i].empState + "</td>";
-			 				str = str + "</tr>";
-			 			}
-			 			str + "</table>";
-			 			$("#tips").html(str);
-			 		},error:function(error){
-			 			window.location.href="login.html";
-			 		}
-			 	})
-			}
-			empDelete = function(){	
-			 	$.ajax({
-			 		url:"/hotel/empDelete",
-			 		type:"post",
-			 		data: $("#emp").serialize(),
-			 		success:function(data){
-			 			if(data == "success"){
-			 				$("#info").html("员工删除成功");
-			 				empGoUpdate();
-			 			} else {
-			 				$("#info").html("员工删除失败");
-			 			}
-			 		},error:function(error){
-			 			$("#info").html("员工删除操作失败");
-			 		}
-			 	})
-			}
-			empUpdate = function(){	
-			 	$.ajax({
-			 		url:"/hotel/empUpdate",
-			 		type:"post",
-			 		data: $("#emp").serialize(),
-			 		success:function(data){
-			 			if(data == "success"){
-			 				$("#info").html("员工权限激活成功");
-			 				empGoUpdate();
-			 			} else {
-			 				$("#info").html("员工权限激活失败");
-			 			}
-			 		},error:function(error){
-			 			$("#info").html("员工权限激活操作失败");
-			 		}
-			 	})
-			}
-			empUpdateJob = function(){	
-			 	$.ajax({
-			 		url:"/hotel/empUpdateJob",
-			 		type:"post",
-			 		data: $("#emp").serialize(),
-			 		success:function(data){
-			 			if(data == "success"){
-			 				$("#info").html("员工职位修改成功");
-			 				empGoUpdate();
-			 			}
-			 		},error:function(error){
-			 			$("#info").html("员工职位修改失败");
-			 		}
-			 	})
-			}
-			empGoUpdateOwn = function(){
-				display();
-				$("#empUpdateOwn").css("display","block");
-			 	$.ajax({
-			 		url:"/hotel/empGoUpdateOwn",
-			 		type:"post",
-			 		data: $("#empGoUpdateOwn").serialize(),
-			 		success:function(data){
-			 			var json = eval(data);
-			 			var str = "<h2>修改前</h2><table border='1'>";
-			 			str = str + "<tr><td>编号</td><td>姓名</td><td>密码</td><td>工作</td>"
-			 					  +"<td>创建ID</td><td>创建时间</td><td>修改ID</td><td>修改时间</td></tr>";
-		 				str = str + "<tr><td>" + json.empId + "</td>";
-		 				str = str + "<td>" + json.empName + "</td>";
-		 				str = str + "<td>" + json.empPass + "</td>";
-		 				str = str + "<td>" + json.empType + "</td>";
-		 				str = str + "<td>" + json.createId + "</td>";
-		 				str = str + "<td>" + json.createTime + "</td>";
-		 				str = str + "<td>" + json.updateId + "</td>";
-		 				str = str + "<td>" + json.updateTime + "</td></tr></table><h2>修改后</h2>";
-			 			$("#tips").html(str);
-			 			$("#empUpdateOwnId").val(json.empId);
-			 			$("#empUpdateOwnName").val(json.empName);
-			 			$("#empUpdateOwnPass").val(json.empPass);
-			 		},error:function(error){
-			 			window.location.href="login.html";
-			 		}
-			 	})
-			}
-			empUpdateOwn = function(){	
-			 	$.ajax({
-			 		url:"/hotel/empUpdateOwn",
-			 		type:"post",
-			 		data: $("#empUpdateOwn").serialize(),
-			 		success:function(data){
-			 			if(data == "success"){
-			 				$("#info").html("个人信息修改成功");
-			 				empGoUpdateOwn();
-			 			} else {
-			 				$("#info").html("个人信息修改失败");
-			 			}
-			 		},error:function(error){
-			 			$("#info").html("个人信息修改失败");
-			 		}
-			 	})
-			}
-			function display() {
-				$("#empUpdateOwn").css("display","none");
-				$("#emp").css("display","none");
-			}
-		</script>
+		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+		<link rel="stylesheet" href="css/main.css">
+		<script type="text/javascript" src="js/main.js"></script>
 	</head>
 	<body style="background-image: url('image/hotel.jpg')">
 		<header>
@@ -216,27 +12,16 @@
 			<span>hotel</span>
 		</header>
 		<div class="left">
-			<form action="empGoUpdate" method="get" class="empGoUpdate" id="${emp1.empType}">
-				<input onclick="empGoUpdate()" type="button" value="员工信息管理" title="员工信息修改">
-			</form>
-			<form action="empGoAddHouse" method="get" class="empGoAddHouse" id="${emp1.empType}1">
-				<input onclick="empGoAddHouse()" type="button" value="添加房屋信息" title="添加房屋信息">
-			</form>
-			<form action="empGoshowHouse" method="get" class="empGoshowHouse" id="${emp1.empType}1">
-				<input onclick="empGoshowHouse()" type="button" value="显示房屋信息" title="显示房屋信息">
-			</form>
-			<form action="empGoAddOrder" method="get" class="empGoAddOrder" id="${emp1.empType}2">
-				<input onclick="empGoAddOrder()" type="button" value="添加订房信息" title="添加订房信息">
-			</form>
-			<form action="empGoChangeOrder" method="get" class="empGoChangeOrder" id="${emp1.empType}2">
-				<input onclick="empGoAddOrder()" type="button" value="修改订房信息" title="修改订房信息">
-			</form>
-			<form action="empGoShowOrder" method="get" class="empGoShowOrder" id="${emp1.empType}2">
-				<input onclick="empGoShowOrder()" type="button" value="显示订房信息" title="显示订房信息">
-			</form>
-			<form action="empGoshowHouseState" method="get" class="empGoshowHouseState" id="${emp1.empType}2">
-				<input onclick="empGoshowHouseState()" type="button" value="显示房间状态" title="显示房间状态">
-			</form>
+			<input class="empGoUpdate" onclick="empGoUpdate()" type="button" value="员工信息管理" title="员工信息修改">
+			<input class="empGoAddHouse" onclick="empGoAddHouse()" type="button" value="添加房屋信息" title="添加房屋信息">
+			<input class="empGoshowHouse" onclick="empGoshowHouse()" type="button" value="显示房屋信息" title="显示房屋信息">
+			<input class="empGoUpdateHouse" onclick="empGoUpdateHouse()" type="button" value="修改房屋信息" title="修改房屋信息">
+			<input class="empGoAddOrder" onclick="empGoAddOrder()" type="button" value="添加订房信息" title="添加订房信息">
+			<input class="empGoChangeOrder" onclick="empGoChangeOrder()" type="button" value="修改订房信息" title="修改订房信息">
+			<input class="empGoShowOrder" onclick="empGoShowOrder()" type="button" value="显示订房信息" title="显示订房信息">
+			<input class="empGoShowResrve" onclick="empGoShowResrve()" type="button" value="显示入住信息" title="显示入住信息">
+			<input class="empGoShowUser" onclick="empGoShowUser()" type="button" value="显示用户信息" title="显示用户信息">
+			<input class="empGoshowHouseState" onclick="empGoshowHouseState()" type="button" value="显示房间状态" title="显示房间状态">
 			<form id="empGoUpdateOwn">
 				<input type="text" id="empName" name="empName">
 				<input onclick="empGoUpdateOwn()" type="button" value="个人信息管理" title="个人信息修改">
@@ -244,6 +29,86 @@
 			<input onclick="empdowmLine()" type="button" value="退出登录" title="退出登录"><br>
 		</div>
 		<div class="right">
+			<form id="updateOrder">
+				请输入房间号：<input type="text" name="houseId"><br><br>
+				<input type="button" onclick="changeOrderA()" value="取消订房" title="取消订房">
+				<input type="button" onclick="changeReciver()" value="转接待" title="转接待">
+				<span id="info10"></span>
+			</form>
+
+			<div id="info8">
+				<form id="changeHouseS">
+					客户姓名：<input type="text" id="bhouseLoc" name="houseLoc"><br><br>
+					房间编号：<input type="text" id="bhouseId" name="houseId"><br><br>
+					房间押金：<select name="bhouseDep" id="bhouseDep">
+								<option value="100" selected>单人间</option>
+								<option value="200">双人标准间</option>
+								<option value="300">豪华双人间</option>
+								<option value="400">豪华三人间</option>
+								<option value="500">总统套房</option>
+							</select><br><br>
+					<input onclick="addOrder()" type="button" value="预定房间" title="预定房间">
+					<input onclick="changeReciver()" type="button" value="直接入住" title="直接入住">
+					<span id="info7"></span>
+				</form>
+			</div>
+			
+			<form id="reserveAdd">
+	            <table style="text-align: center" border="1">
+	                <tr>
+	                    <td colspan="7">
+	                        <strong>入住登记注册</strong>
+	                    </td>
+	                </tr>
+	                 <tr>
+	                    <td>房间编号：</td>
+	                    <td><input type="text" id="nupdateId" name="updateId"></td>
+	                </tr>
+	                <tr>
+	                    <td>房间押金：</td>
+	                    <td><input type="text" id="nhouseDep" name="houseDep"></td>
+	                </tr>
+	                <tr>
+	                	<td>是否开网：</td>
+	                	<td>
+	                		 开：<input id="sex" type="radio" name="createTime" value="Y">
+							 不开：<input id="sex" type="radio" name="createTime" checked value="N">
+	                	</td>      
+	                </tr>
+	                <tr>
+	                    <td>客户姓名：</td>
+	                    <td><input type="text" id="nuserName" name="userName"></td>
+	                </tr>
+	                <tr>
+	                	<td>客户姓别：</td>
+	                	<td>
+	                		 男：<input id="sex" type="radio" name="userSex" checked value="M">
+							 女：<input id="sex" type="radio" name="userSex" value="F">
+	                	</td>      
+	                </tr>
+	                <tr>
+	                    <td>身份证号：</td>
+	                    <td><input type="text" name="userCard" value="320124199511080321"></td>
+	                </tr>
+	                <tr>
+	                    <td>家庭住址：</td>
+	                    <td><input type="text" name="userAddress" value="xx省xx市xx县"></td>
+	                </tr>
+	                 <tr>
+	                    <td>电话号码：</td>
+	                    <td><input type="text" name="userPhone" value="18888888888"></td>
+	                </tr>
+	                <tr>
+	                    <td>
+	                        <input type="button" onclick="reserveAdd()" value="办理入住">
+	                    </td>
+	                    <td>
+	                    	<span id="info9"></span>
+	                    </td>
+	                </tr>
+	            </table>
+	        </form>
+
 			<form id="emp">
 				员工编号：<input type="text" name="empId"><span id="info"></span><br><br>
 				<input onclick="empDelete()" type="button" value="删除" title="删除该员工">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -255,20 +120,128 @@
 				</select>
 				<input onclick="empUpdateJob()" type="button" value="修改职位" title="修改该员工职位">
 			</form>
-			<span id="tips"></span>
-			<form action="empUpdateOwn" method="post" id="empUpdateOwn">
+			
+			<div id="info3">
+				<span class="A11">单人间</span>
+				<span class="B11">双人标准间</span>
+				<span class="C11">豪华双人间</span>
+				<span class="D11">豪华三人间</span>
+				<span class="E11">总统套房</span>
+				<span onclick="houseStateA()" class="F11">只看空房</span>
+				<span onclick="houseStateB()" class="G11">只看预订</span>
+				<span onclick="houseStateC()" class="H11">只看入住</span>
+			</div>
+			
+			<div id="info6">
+				<span onclick="houseType('A')" class="F11">单人间</span>
+				<span onclick="houseType('B')" class="G11">双人标准间</span>
+				<span onclick="houseType('C')" class="H11">豪华双人间</span>
+				<span onclick="houseType('D')" class="I11">豪华三人间</span>
+				<span onclick="houseType('E')" class="J11">总统套房</span>
+			</div>
+			
+			<form id="updateHouse">
 				<table border="1">
 					<tr>
-						<td>用户编号：</td>
-						<td>用户姓名：</td>
-						<td>用户密码：</td>
-						<td>用户操作：</td>
+						<td colspan="2">修改房间信息</td>
+					</tr>
+					<tr>
+						<td>房间ID</td>
+						<td><input type="text" name="houseId" value="9999"></td>
+					</tr>
+					<tr>
+						<td>房间价格</td>
+						<td><input type="text" name="housePrice"></td>
+					</tr>
+					<tr>
+						<td>网费价格</td>
+						<td><input type="text" name="houseDep"></td>
+					</tr>
+					<tr>
+						<td>房间类型</td>
+						<td>
+							<select name="houseType">
+								<option value="A" selected>单人间</option>
+								<option value="B">双人标准间</option>
+								<option value="C">豪华双人间</option>
+								<option value="D">豪华三人间</option>
+								<option value="E">总统套房</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input onclick="houseDelete()" type="button" value="删除房间" title="删除该房间">
+							<input onclick="houseUpdate()" type="button" value="修改价格" title="修改该种类房间价格">
+							<input onclick="houseUpdate1()" type="button" value="修改网费" title="修改网费">
+						</td>
+					</tr>
+				</table>
+				<span id="info5"></span>
+			</form>
+			
+			<span id="tips"></span>
+			
+			<form id="empUpdateOwn">
+				<table border="1">
+					<tr>
+						<td>用户编号</td>
+						<td>用户姓名</td>
+						<td>用户密码</td>
+						<td>用户操作</td>
 					</tr>
 					<tr>
 						<td><input id="empUpdateOwnId" type="text" name="empId" readonly="readonly"></td>
 						<td><input id="empUpdateOwnName" type="text" name="empName"></td>
 						<td><input id="empUpdateOwnPass" type="text" name="empPass"></td>
-						<td><input type="button" value="修改信息" title="个人信息修改"></td>
+						<td><input onclick="empUpdateOwn()" type="button" value="修改信息" title="个人信息修改"></td>
+					</tr>
+				</table>
+				<span id="info1"></span>
+			</form>
+			
+			<form action="houseAdd" method="post" id="houseAdd">
+				<table border="1">
+					<tr>
+						<td colspan="2">添加房屋信息</td>
+					</tr>
+					<tr>
+						<td>房间编号</td>
+						<td><input type="text" name="houseId" id="houseId"
+							onblur="str = document.getElementById('houseId').value;str = str.slice(0, 2) + '-' + str.slice(2); document.getElementById('houseLoc').value = str"></td>
+					</tr>
+					<tr>
+						<td>房间位置</td>
+						<td><input type="text" name="houseLoc" id="houseLoc" readonly></td>
+					</tr>
+					<tr>
+						<td>房间类型</td>
+						<td><select name="houseType">
+								<option value="A" selected>单人间</option>
+								<option value="B">双人标准间</option>
+								<option value="C">豪华双人间</option>
+								<option value="D">豪华三人间</option>
+								<option value="E">总统套房</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td>设备状况</td>
+						<td><select name="houseArt" id="">
+								<option value="Y" selected>完好</option>
+								<option value="N">损坏&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td>房间状态</td>
+						<td><select name="houseState" id="">
+								<option value="A" selected>空房</option>
+								<option value="B">已预订</option>
+								<option value="C">已入住&nbsp;&nbsp;&nbsp;</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><input onclick="houseAdd()" type="button" value="添加房屋信息"></td>
+						<td><span id="info2"></span></td>
 					</tr>
 				</table>
 			</form>

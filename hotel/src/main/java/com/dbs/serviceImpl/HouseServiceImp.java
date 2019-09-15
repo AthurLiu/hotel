@@ -31,4 +31,20 @@ public class HouseServiceImp implements HouseService {
 	public void setHmapper(HouseMapper hmapper) {
 		this.hmapper = hmapper;
 	}
+
+	public List<House> selectAllHouseA() {
+		return hmapper.selectAllHouseA();
+	}
+
+	public List<House> selectAllHouseB() {
+		return hmapper.selectAllHouseB();
+	}
+
+	public List<House> selectAllHouseC() {
+		return hmapper.selectAllHouseC();
+	}
+
+	public boolean houseUpdateNet(House house) {
+		return hmapper.houseUpdateNet(house);
+	}
 }

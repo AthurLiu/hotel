@@ -9,6 +9,15 @@
     <select id="selectAllHouse" resultMap="houses">
     	select h.*,p.house_pric from house h,house_price p where h.house_type = p.house_type
     </select> 
+    <select id="selectAllHouseA" resultMap="houses">
+    	select h.*,p.house_pric from house h,house_price p where h.house_type = p.house_type and h.house_state = 'A'
+    </select> 
+    <select id="selectAllHouseB" resultMap="houses">
+    	select h.*,p.house_pric from house h,house_price p where h.house_type = p.house_type and h.house_state = 'B'
+    </select> 
+    <select id="selectAllHouseC" resultMap="houses">
+    	select h.*,p.house_pric from house h,house_price p where h.house_type = p.house_type and h.house_state = 'C'
+    </select> 
     <delete id="houseDelete" parameterType="Integer">
     	delete from house where house_id = #{house_id} and house_state = 'A'
     </delete>
@@ -16,6 +25,9 @@
     	update house_price set house_pric = #{housePrice} , update_id = #{updateId} , update_time = now() 
     	where house_type = #{houseType}
     </update>  
+    <update id="houseUpdateNet" parameterType="House">
+    	update house_price set house_net = #{houseDep} , update_id = #{updateId} , update_time = now() 
+    </update>
     
     <resultMap type="House" id="houses">
     	<id property="houseId" column="house_id" javaType="int" jdbcType="INTEGER"></id>

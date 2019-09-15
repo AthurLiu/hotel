@@ -3,6 +3,7 @@ package com.dbs.serviceImpl;
 import java.util.List;
 import com.dbs.entity.House;
 import com.dbs.entity.Order;
+import com.dbs.entity.Reserve;
 import com.dbs.entity.User;
 import com.dbs.mapper.OrderMapper;
 import com.dbs.service.OrderService;
@@ -68,5 +69,21 @@ public class OrderServiceImp implements OrderService {
 
 	public List<House> selectAllHouse() {
 		return omapper.selectAllHouse();
+	}
+
+	public List<House> selectAllEmptyHouseT(String type) {
+		return omapper.selectAllEmptyHouseT(type);
+	}
+
+	public List<House> selectOrderById(int userId) {
+		return omapper.selectOrderById(userId);
+	}
+
+	public List<Reserve> empGoShowResrve() {
+		return omapper.empGoShowResrve();
+	}
+
+	public List<User> empGoShowUser() {
+		return omapper.empGoShowUser();
 	}
 }

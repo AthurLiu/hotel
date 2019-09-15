@@ -1,0 +1,106 @@
+input[type="button"]{
+	background-color:transparent;
+	border:none;
+	color:blue;
+}
+.left form{
+	display: inline;
+}
+.left input{
+	margin-top:10px;
+}
+empGoUpdate:hover,input:hover {
+	color:red;
+}
+#B,#C,#D,#A1,#C1,#D1,#A2,#B2,#C2,.left input[type="text"],#emp,#empUpdateOwn{
+	display: none;
+}
+#houseAdd,#updateHouse,#info8,#reserveAdd,#updateOrder{
+	display: none;
+}
+span{
+	color:red;
+	font-size: 14px;
+}
+header{
+	height:130px;
+	background-color: orange;
+	text-align: center;
+}
+header >span{
+	font-size: 50px;
+	font-family: '隶书';
+	color:black;
+}
+header >p{
+	text-align: left;
+}
+.left{
+	background-color: cyan;
+	width:150px;
+	height:820px;
+}
+.right{
+	margin-top:-820px;
+	margin-left:150px;
+}
+#houseAdd table,#updateHouse table{
+	text-align: center;
+}
+#houseAdd table input[type="text"],#updateHouse table input[type="text"]{
+	width:100px;
+}
+#houseAdd table select{
+	display: inline-block;
+	width:100px;
+}
+.A11,.F11{
+	background-color: red;
+}
+.B11,.G11{
+	background-color: orange;
+}
+.C11,.H11{
+	background-color: yellow;
+}
+.D11,.I11{
+	background-color: green;
+}
+.E11,.J11{
+	background-color: blue;
+}
+.F11,.G11,.H11,.I11,.J11{
+	cursor: pointer;
+	color:blue;
+}
+#info3{
+	margin:10px;
+	display: none;
+}
+#info6{
+	margin:10px;
+	display: none;
+}
+#info3 span,#info6 span{
+	color:black;
+	padding:5px;
+	margin:10px;
+}
+#houseTable{
+	text-align: center;
+}
+#houseTable tr{
+	height: 100px;
+}
+#houseTable td{
+	width: 800px;
+}
+.A22{
+	background-color: blue;
+}
+.B22{
+	background-color: yellow;
+}
+.C22{
+	background-color: red;
+}
